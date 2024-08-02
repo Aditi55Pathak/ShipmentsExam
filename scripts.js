@@ -1,128 +1,197 @@
-// scripts.js
-
-document.addEventListener('DOMContentLoaded', () => {
-    const treeView = document.getElementById('treeView');
-    const fileView = document.getElementById('fileView');
-    const createFileBtn = document.getElementById('createFile');
-    const createDirBtn = document.getElementById('createDir');
-    const renameBtn = document.getElementById('rename');
-    const deleteBtn = document.getElementById('delete');
-    
-    let selectedNode = null;
+// File structure data
+let fileStructure = {
+    root: {
+      type: 'directory',
+      children: {}
+    }
+  };
   
-    // Sample data structure for the file tree
-    const fileSystem = {
-      'root': {
-        'file1.txt': null,
-        'folder1': {
-          'file2.txt': null,
-          'subfolder1': {}
+  // Current directory path
+  let currentPath = ['root'];
+  
+  // Function to render the file structure
+  function renderFileStructure() {
+    const fileList = document.querySelector('.detail-wrapper');
+    fileList.innerHTML = '';
+  
+    let currentDir = fileStructure;
+    for (let dir of currentPath) {
+      currentDir = currentDir[dir].children;
+    }
+  
+    for (let item in currentDir) {
+      const itemData = currentDir[item];
+      const itemElement = document.createElement('div');
+      itemElement.className = 'detail-card';
+      itemElement.innerHTML = `
+        <img class="detail-img" alt="${itemData.type}" src="images/${itemData.type}.jpg" />
+        <div class="detail-desc">
+          <div class="detail-name">
+            <h4>${item}</h4>
+            <p class="detail-sub">${itemData.type}</p>
+          </div>
+          <ion-icon class="detail-favourites" name="bookmark-outline"></ion-icon>
+        </div>
+      `;
+      fileList.appendChild(itemElement);
+    }
+  }
+  
+  // Function to render the tree structure
+  function renderTreeStructure() {
+    const treeContainer = document.querySelector('.sidebar-menus');
+    treeContainer.innerHTML = ''; // Clear existing content
+  
+    function renderTree(structure, parent) {
+      for (let item in structure) {
+        const itemElement = document.createElement('a');
+        itemElement.href = '#';
+        itemElement.innerHTML = `<ion-icon name="${structure[item].type === 'directory' ? 'folder-outline' : 'document-outline'}"></ion-icon>${item}`;
+        
+        if (structure[item].type === 'directory') {
+          itemElement.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPath = [...parent, item];
+            renderFileStructure();
+            renderTreeStructure();
+          });
+        }
+        
+        treeContainer.appendChild(itemElement);
+  
+        if (structure[item].type === 'directory') {
+          renderTree(structure[item].children, [...parent, item]);
         }
       }
+    }
+  
+    renderTree(fileStructure.root.children, ['root']);
+  
+    // Add buttons for creating new items
+    const newFolderBtn = document.createElement('a');
+    newFolderBtn.href = '#';
+    newFolderBtn.innerHTML = '<ion-icon name="folder-outline"></ion-icon>New Folder';
+    newFolderBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = prompt('Enter folder name:');
+      if (name) createNewItem(name, 'directory');
+    });
+    treeContainer.appendChild(newFolderBtn);
+  
+    const newFileBtn = document.createElement('a');
+    newFileBtn.href = '#';
+    newFileBtn.innerHTML = '<ion-icon name="document-outline"></ion-icon>New File';
+    newFileBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = prompt('Enter file name:');
+      if (name) createNewItem(name, 'file');
+    });
+    treeContainer.appendChild(newFileBtn);
+  }
+  
+  // Function to create a new item (file or directory)
+  function createNewItem(name, type) {
+    let currentDir = fileStructure;
+    for (let dir of currentPath) {
+      currentDir = currentDir[dir].children;
+    }
+    
+    if (currentDir[name]) {
+      alert('An item with this name already exists!');
+      return;
+    }
+  
+    currentDir[name] = {
+      type: type,
+      children: type === 'directory' ? {} : null
     };
   
-    // Render file tree recursively
-    function renderTree(node, parentElement) {
-      const ul = document.createElement('ul');
-      for (const key in node) {
-        const li = document.createElement('li');
-        li.textContent = key;
-        li.addEventListener('click', (event) => {
-          event.stopPropagation();
-          selectedNode = key;
-          updateFileView(node[key]);
-        });
-        ul.appendChild(li);
+    saveData();
+    renderFileStructure();
+    renderTreeStructure();
+  }
   
-        if (typeof node[key] === 'object') {
-          renderTree(node[key], li);
-        }
-      }
-      parentElement.appendChild(ul);
+  // Function to rename an item
+  function renameItem(oldName, newName) {
+    let currentDir = fileStructure;
+    for (let dir of currentPath) {
+      currentDir = currentDir[dir].children;
     }
   
-    function updateFileView(node) {
-      fileView.innerHTML = '';
-      if (typeof node === 'object') {
-        for (const key in node) {
-          const div = document.createElement('div');
-          div.textContent = key;
-          fileView.appendChild(div);
-        }
-      } else {
-        fileView.textContent = 'No files or directories.';
-      }
+    if (currentDir[newName]) {
+      alert('An item with this name already exists!');
+      return;
     }
   
-    // Initial rendering
-    renderTree(fileSystem, treeView);
+    currentDir[newName] = currentDir[oldName];
+    delete currentDir[oldName];
   
-    // Create new file or directory
-    function createNode(type) {
-      if (selectedNode) {
-        const name = prompt(`Enter ${type} name:`);
-        if (name) {
-          const parts = selectedNode.split('/');
-          let current = fileSystem;
-          for (const part of parts) {
-            if (!current[part]) return;
-            current = current[part];
-          }
-          if (type === 'file') {
-            current[name] = null;
-          } else {
-            current[name] = {};
-          }
-          treeView.innerHTML = '';
-          renderTree(fileSystem, treeView);
-        }
-      } else {
-        alert('Please select a directory to add the new item.');
-      }
+    saveData();
+    renderFileStructure();
+    renderTreeStructure();
+  }
+  
+  // Function to delete an item
+  function deleteItem(name) {
+    let currentDir = fileStructure;
+    for (let dir of currentPath) {
+      currentDir = currentDir[dir].children;
     }
   
-    createFileBtn.addEventListener('click', () => createNode('file'));
-    createDirBtn.addEventListener('click', () => createNode('directory'));
+    delete currentDir[name];
   
-    // Rename file or directory
-    renameBtn.addEventListener('click', () => {
-      if (selectedNode) {
-        const newName = prompt('Enter new name:');
-        if (newName) {
-          const parts = selectedNode.split('/');
-          const oldName = parts.pop();
-          let current = fileSystem;
-          for (const part of parts) {
-            if (!current[part]) return;
-            current = current[part];
-          }
-          current[newName] = current[oldName];
-          delete current[oldName];
-          treeView.innerHTML = '';
-          renderTree(fileSystem, treeView);
-        }
-      } else {
-        alert('Please select a file or directory to rename.');
-      }
+    saveData();
+    renderFileStructure();
+    renderTreeStructure();
+  }
+  
+  // Function to save data to localStorage
+  function saveData() {
+    localStorage.setItem('fileStructure', JSON.stringify(fileStructure));
+  }
+  
+  // Function to load data from localStorage
+  function loadData() {
+    const savedData = localStorage.getItem('fileStructure');
+    if (savedData) {
+      fileStructure = JSON.parse(savedData);
+    }
+  }
+  
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+  
+    // New Folder button
+    document.querySelector('.sidebar-menus a:first-child').addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = prompt('Enter folder name:');
+      if (name) createNewItem(name, 'directory');
     });
   
-    // Delete file or directory
-    deleteBtn.addEventListener('click', () => {
-      if (selectedNode) {
-        const parts = selectedNode.split('/');
-        const name = parts.pop();
-        let current = fileSystem;
-        for (const part of parts) {
-          if (!current[part]) return;
-          current = current[part];
-        }
-        delete current[name];
-        treeView.innerHTML = '';
-        renderTree(fileSystem, treeView);
-        fileView.innerHTML = 'No files or directories.';
-      } else {
-        alert('Please select a file or directory to delete.');
-      }
+    // New File button
+    document.querySelector('#new-file-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = prompt('Enter file name:');
+      if (name) createNewItem(name, 'file');
     });
+  
+    // Rename button
+    document.querySelector('#rename-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const oldName = prompt('Enter the name of the item to rename:');
+      const newName = prompt('Enter the new name:');
+      if (oldName && newName) renameItem(oldName, newName);
+    });
+  
+    // Delete button
+    document.querySelector('#delete-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = prompt('Enter the name of the item to delete:');
+      if (name) deleteItem(name);
+    });
+  
+    // Initial render
+    renderFileStructure();
+    renderTreeStructure();
   });
-  
