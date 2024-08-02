@@ -1,11 +1,11 @@
-/* styles.css */
 
+/* CSS for style bin html. */
 :root {
     --sidebar-width: 250px;
-    --main-bg-color: #171630;
+    --main-bg-color: #000000;
     --sidebar-bg-color: #2f323a;
     --sidebar-text-color: #ffffff;
-    --button-bg-color: #4ecd0d;
+    --button-bg-color: #ff6e4d;
     --button-text-color: #ffffff;
   }
   
@@ -67,7 +67,7 @@
     background-color: #ffffff;
     border: 1px solid #ddd;
     padding: 20px;
-    height: calc(100vh - 60px); /* Adjust based on toolbar height */
+    height: calc(100vh - 60px); 
     overflow-y: auto;
   }
   
