@@ -1,4 +1,73 @@
-.body{
+/* styles.css */
 
-    
-}
+:root {
+    --sidebar-width: 250px;
+    --main-bg-color: #f7f7f7;
+    --sidebar-bg-color: #2f323a;
+    --sidebar-text-color: #ffffff;
+    --button-bg-color: #4ecd0d;
+    --button-text-color: #ffffff;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--main-bg-color);
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-text-color);
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  }
+  
+  .tree-view {
+    max-height: calc(100vh - 20px);
+    overflow-y: auto;
+  }
+  
+  .tree-view ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .tree-view li {
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .toolbar {
+    margin-bottom: 20px;
+  }
+  
+  .toolbar button {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .file-view {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    height: calc(100vh - 60px); /* Adjust based on toolbar height */
+    overflow-y: auto;
+  }
+  
