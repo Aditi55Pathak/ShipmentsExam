@@ -1,32 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>File Explorer</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container">
-    <!-- Sidebar for file tree -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Explorer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Adding Google fonts for better visibility-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Side Bar -->
     <div class="sidebar">
-      <div class="tree-view" id="treeView"></div>
-    </div>
-    
-    <!-- Main content area -->
-    <div class="main-content">
-      <div class="toolbar">
-        <button id="createFile">Create File</button>
-        <button id="createDir">Create Directory</button>
-        <button id="rename">Rename</button>
-        <button id="delete">Delete</button>
+      <!-- Logo -->
+      <h1 class="logo">RepoTree</h1>
+      <!-- List of Menu -->
+      <div class="sidebar-menus">
+        <a href="#"><ion-icon name="folder-open-outline"></ion-icon>New Folder</a>
+        <a href="#"><ion-icon name="document-outline"></ion-icon>New File</a>
+        <a href="#"><ion-icon name="book-outline"></ion-icon>Rename</a>
+        <a href="#"><ion-icon name="trash-outline"></ion-icon>Delete</a>
+        <a href="#"
+          ><ion-icon name="notifications-outline"></ion-icon>Notification</a
+        >
+        <a href="#"><ion-icon name="settings-outline"></ion-icon>Setting</a>
       </div>
-      <div class="file-view" id="fileView">
-        <!-- Display files and directories here -->
+      <!-- Logout section -->
+      <div class="sidebar-logout">
+        <a href="#"><ion-icon name="log-out-outline"></ion-icon>Logout</a>
       </div>
     </div>
-  </div>
-  
-  <script src="scripts.js"></script>
-</body>
+    <!-- Main Bar -->
+    <div class="main">
+      <!-- Main nav bar that contains search and shopping cart -->
+      <div class="main-navbar">
+        <!-- Menu When appear on Mobile Version-->
+        <ion-icon class="menu-toggle" name="menu-outline"></ion-icon>
+        <!-- Search Bar -->
+        <div class="search">
+          <input type="text" placeholder="What is cooking in your head?" />
+          <button class="search-btn">Search</button>
+        </div>
+        <!--Profile Icon on left side of nav bar-->
+        <div class="profile">
+          <a class="cart" href="#"><ion-icon name="cart-outline"></ion-icon></a>
+          <a class="user" href="#"
+            ><ion-icon name="person-outline"></ion-icon
+          ></a>
+        </div>
+      </div>
+      <!-- Main highlight -->
+      <div class="main-highlight">
+        <!--title section and arrow-->
+        <div class="main-header">
+          <h2 class="main-title">Recommendations</h2>
+          <div class="main-arrow">
+            <ion-icon
+              class="back"
+              name="chevron-back-circle-outline"
+            ></ion-icon>
+            <ion-icon
+              class="next"
+              name="chevron-forward-circle-outline"
+            ></ion-icon>
+          </div>
+        </div>
+        <!-- Recommendations Menu -->
+        <div class="highlight-wrapper">
+          <div class="highlight-card">
+            <img
+              class="highlight-img"
+              src="images/pan-cake.jpg"
+              alt="pan-cake"
+            />
+            <div class="highlight-desc">
+              <h4>Pan Cake</h4>
+              <p>$23.56</p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <img class="highlight-img" src="images/pizza.jpg" alt="pizza" />
+            <div class="highlight-desc">
+              <h4>Pizza</h4>
+              <p>$23.56</p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <img class="highlight-img" src="images/burger.jpg" alt="burger" />
+            <div class="highlight-desc">
+              <h4>Burger</h4>
+              <p>$23.56</p>
+            </div>
+          </div>
+          <div class="highlight-card">
+            <img class="highlight-img" src="images/fries.jpg" alt="fries" />
+            <div class="highlight-desc">
+              <h4>Fries</h4>
+              <p>$23.56</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Main Menu and order section -->
+      <div class="main-menu">
+        <!-- Filter Section-->
+        <div class="main-filter">
+          <div>
+            <h2 class="main-title">Menu <br />Category</h2>
+            <div class="main-arrow">
+              <ion-icon
+                class="back-menus"
+                name="chevron-back-circle-outline"
+              ></ion-icon>
+              <ion-icon
+                class="next"
+                name="chevron-forward-circle-outline"
+              ></ion-icon>
+            </div>
+          </div>
+          <div class="filter-wrapper">
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="restaurant-outline"></ion-icon>
+              </div>
+              <p>All Menus</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="fast-food-outline"></ion-icon>
+              </div>
+              <p>Burger</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="pizza-outline"></ion-icon>
+              </div>
+              <p>Pizza</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="wine-outline"></ion-icon>
+              </div>
+              <p>Wine</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="fish-outline"></ion-icon>
+              </div>
+              <p>Seafood</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="cafe-outline"></ion-icon>
+              </div>
+              <p>Coffee</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="nutrition-outline"></ion-icon>
+              </div>
+              <p>Healthy</p>
+            </div>
+            <div class="filter-card">
+              <div class="filter-icon">
+                <ion-icon name="cafe-outline"></ion-icon>
+              </div>
+              <p>Tea</p>
+            </div>
+          </div>
+        </div>
+        <hr class="divider" />
+        <!-- List of Food menu-->
+        <div class="main-detail">
+          <h2 class="main-title">Choose your Order</h2>
+          <div class="detail-wrapper">
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/soup.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Soup</h4>
+                  <p class="detail-sub">The tasty Soup</p>
+                  <p class="price">$152.78</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/pizza.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Pizza</h4>
+                  <p class="detail-sub">Delicious Cheese Pizza</p>
+                  <p class="price">$12.99</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/manchurian.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Manchurian</h4>
+                  <p class="detail-sub">Spicy Manchurian</p>
+                  <p class="price">$10.99</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/burger.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Burger</h4>
+                  <p class="detail-sub">Juicy Beef Burger</p>
+                  <p class="price">$8.99</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/sandwich.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Sandwich</h4>
+                  <p class="detail-sub">Club Sandwich</p>
+                  <p class="price">$6.99</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+            <div class="detail-card">
+              <img class="detail-img" alt="food" src="images/drink.jpg" />
+              <div class="detail-desc">
+                <div class="detail-name">
+                  <h4>Drinks</h4>
+                  <p class="detail-sub">Refreshing Beverages</p>
+                  <p class="price">$4.99</p>
+                </div>
+                <ion-icon
+                  class="detail-favourites"
+                  name="bookmark-outline"
+                ></ion-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adding Icons for visuals-->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="script.js"></script>
+  </body>
 </html>
