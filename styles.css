@@ -1,11 +1,11 @@
 :root {
-    --primaryColor: #3a2d28; /* Darker shade of green */
-    --secondaryColor: #a48374; /* Vibrant orange */
+    --primaryColor: #3a2d28; 
+    --secondaryColor: #a48374; 
     --whiteColor: #ffffff;
     --blackColor: #cbad8d;
-    --softGreenColor: #d1c7bd; /* Lighter shade of green */
-    --darkGreyColor: #ebe3db; /* Dark grey */
-    --greyColor: #f1ede6; /* Light grey */
+    --softGreenColor: #d1c7bd; 
+    --darkGreyColor: #ebe3db;
+    --greyColor: #f1ede6; 
   }
   
   * {

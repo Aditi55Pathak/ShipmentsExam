@@ -1,4 +1,4 @@
-// File structure data
+// File structure data here 
 let fileStructure = {
   root: {
     type: 'directory',
@@ -15,7 +15,7 @@ let fileStructure = {
 
 let currentPath = ['root'];
 
-// Function to render the file structure
+// Function to render the file structure printing
 function renderFileStructure() {
   const detailWrapper = document.querySelector('.detail-wrapper');
   detailWrapper.innerHTML = '';
@@ -44,7 +44,7 @@ function renderFileStructure() {
   }
 }
 
-// Function to create a new item (file or directory)
+// Function to create a new item -- enjoy
 function createNewItem(name, type) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
@@ -65,7 +65,7 @@ function createNewItem(name, type) {
   saveData();
 }
 
-// Function to rename an item
+// Function to rename an item --- wow I did it 
 function renameItem(oldName, newName) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
@@ -89,7 +89,7 @@ function renameItem(oldName, newName) {
   saveData();
 }
 
-// Function to delete an item
+// Function to delete an item --- Deleted
 function deleteItem(name) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
