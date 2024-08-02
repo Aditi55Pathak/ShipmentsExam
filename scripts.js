@@ -30,12 +30,12 @@ function renderFileStructure() {
     const itemElement = document.createElement('div');
     itemElement.className = 'detail-card';
     itemElement.innerHTML = `
-      <img class="detail-img" alt="${itemData.type}" src="images/${itemData.type}.jpg" />
+      <img class="detail-img" alt="${itemData.type}" src="images/folder.jpg" />
       <div class="detail-desc">
         <div class="detail-name">
           <h4>${item}</h4>
           <p class="detail-sub">${itemData.type}</p>
-          <p class="price">${item} ${itemData.type}</p>
+          <p class="price">${itemData.type === 'directory' ? 'Folder' : 'File'}</p>
         </div>
         <ion-icon class="detail-favourites" name="bookmark-outline"></ion-icon>
       </div>
