@@ -138,11 +138,11 @@ function loadData() {
   });
 }
 
-// Event listeners
+// Event listeners implementation
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
 
-  // File action buttons
+  // File action buttons here 
   const fileCards = document.querySelectorAll('.filter-card');
   
   fileCards.forEach(card => {
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Search functionality
+  // Search functionality added for better experince
   const searchInput = document.querySelector('.search input');
   const searchBtn = document.querySelector('.search-btn');
   
@@ -190,6 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Initial render
+  // Initial render here
   renderFileStructure();
 });
