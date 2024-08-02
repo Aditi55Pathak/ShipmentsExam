@@ -1,4 +1,4 @@
-// File structure data here 
+// File structure data
 let fileStructure = {
   root: {
     type: 'directory',
@@ -15,7 +15,7 @@ let fileStructure = {
 
 let currentPath = ['root'];
 
-// Function to render the file structure printing
+// Function to render the file structure
 function renderFileStructure() {
   const detailWrapper = document.querySelector('.detail-wrapper');
   detailWrapper.innerHTML = '';
@@ -44,7 +44,7 @@ function renderFileStructure() {
   }
 }
 
-// Function to create a new item -- enjoy
+// Function to create a new item
 function createNewItem(name, type) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
@@ -65,7 +65,7 @@ function createNewItem(name, type) {
   saveData();
 }
 
-// Function to rename an item --- wow I did it 
+// Function to rename an item
 function renameItem(oldName, newName) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
@@ -89,7 +89,7 @@ function renameItem(oldName, newName) {
   saveData();
 }
 
-// Function to delete an item --- Deleted
+// Function to delete an item
 function deleteItem(name) {
   let currentDir = fileStructure.root;
   for (let dir of currentPath.slice(1)) {
@@ -107,17 +107,35 @@ function deleteItem(name) {
   saveData();
 }
 
-// Function to save data to localStorage
+// Function to save data to the server
 function saveData() {
-  localStorage.setItem('fileStructure', JSON.stringify(fileStructure));
+  fetch('http://localhost:3000/api/file-structure', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(fileStructure),
+  })
+  .then(response => response.json())
+  .then(data => console.log(data.message))
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
 
-// Function to load data from localStorage
+// Function to load data from the server
 function loadData() {
-  const savedData = localStorage.getItem('fileStructure');
-  if (savedData) {
-    fileStructure = JSON.parse(savedData);
-  }
+  fetch('http://localhost:3000/api/file-structure')
+  .then(response => response.json())
+  .then(data => {
+    if (data) {
+      fileStructure = data;
+      renderFileStructure();
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
 }
 
 // Event listeners
