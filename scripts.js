@@ -2,147 +2,99 @@
 let fileStructure = {
     root: {
       type: 'directory',
-      children: {}
+      children: {
+        'Cprograming': { type: 'directory', children: {} },
+        'Java': { type: 'directory', children: {} },
+        'MySql': { type: 'directory', children: {} },
+        'Images': { type: 'directory', children: {} },
+        'Sandwich': { type: 'directory', children: {} },
+        'Drinks': { type: 'directory', children: {} }
+      }
     }
   };
   
-  // Current directory path
   let currentPath = ['root'];
   
   // Function to render the file structure
   function renderFileStructure() {
-    const fileList = document.querySelector('.detail-wrapper');
-    fileList.innerHTML = '';
+    const detailWrapper = document.querySelector('.detail-wrapper');
+    detailWrapper.innerHTML = '';
   
-    let currentDir = fileStructure;
-    for (let dir of currentPath) {
-      currentDir = currentDir[dir].children;
+    let currentDir = fileStructure.root;
+    for (let dir of currentPath.slice(1)) {
+      currentDir = currentDir.children[dir];
     }
   
-    for (let item in currentDir) {
-      const itemData = currentDir[item];
+    for (let item in currentDir.children) {
+      const itemData = currentDir.children[item];
       const itemElement = document.createElement('div');
       itemElement.className = 'detail-card';
       itemElement.innerHTML = `
-        <img class="detail-img" alt="${itemData.type}" src="images/${itemData.type}.jpg" />
+        <img class="detail-img" alt="${itemData.type}" src="images/folder.jpg" />
         <div class="detail-desc">
           <div class="detail-name">
             <h4>${item}</h4>
             <p class="detail-sub">${itemData.type}</p>
+            <p class="price">${item} ${itemData.type}</p>
           </div>
           <ion-icon class="detail-favourites" name="bookmark-outline"></ion-icon>
         </div>
       `;
-      fileList.appendChild(itemElement);
+      detailWrapper.appendChild(itemElement);
     }
-  }
-  
-  // Function to render the tree structure
-  function renderTreeStructure() {
-    const treeContainer = document.querySelector('.sidebar-menus');
-    treeContainer.innerHTML = ''; // Clear existing content
-  
-    function renderTree(structure, parent) {
-      for (let item in structure) {
-        const itemElement = document.createElement('a');
-        itemElement.href = '#';
-        itemElement.innerHTML = `<ion-icon name="${structure[item].type === 'directory' ? 'folder-outline' : 'document-outline'}"></ion-icon>${item}`;
-        
-        if (structure[item].type === 'directory') {
-          itemElement.addEventListener('click', (e) => {
-            e.preventDefault();
-            currentPath = [...parent, item];
-            renderFileStructure();
-            renderTreeStructure();
-          });
-        }
-        
-        treeContainer.appendChild(itemElement);
-  
-        if (structure[item].type === 'directory') {
-          renderTree(structure[item].children, [...parent, item]);
-        }
-      }
-    }
-  
-    renderTree(fileStructure.root.children, ['root']);
-  
-    // Add buttons for creating new items
-    const newFolderBtn = document.createElement('a');
-    newFolderBtn.href = '#';
-    newFolderBtn.innerHTML = '<ion-icon name="folder-outline"></ion-icon>New Folder';
-    newFolderBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const name = prompt('Enter folder name:');
-      if (name) createNewItem(name, 'directory');
-    });
-    treeContainer.appendChild(newFolderBtn);
-  
-    const newFileBtn = document.createElement('a');
-    newFileBtn.href = '#';
-    newFileBtn.innerHTML = '<ion-icon name="document-outline"></ion-icon>New File';
-    newFileBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const name = prompt('Enter file name:');
-      if (name) createNewItem(name, 'file');
-    });
-    treeContainer.appendChild(newFileBtn);
   }
   
   // Function to create a new item (file or directory)
   function createNewItem(name, type) {
-    let currentDir = fileStructure;
-    for (let dir of currentPath) {
-      currentDir = currentDir[dir].children;
+    let currentDir = fileStructure.root;
+    for (let dir of currentPath.slice(1)) {
+      currentDir = currentDir.children[dir];
     }
     
-    if (currentDir[name]) {
+    if (currentDir.children[name]) {
       alert('An item with this name already exists!');
       return;
     }
   
-    currentDir[name] = {
+    currentDir.children[name] = {
       type: type,
       children: type === 'directory' ? {} : null
     };
   
-    saveData();
     renderFileStructure();
-    renderTreeStructure();
+    saveData();
   }
   
   // Function to rename an item
   function renameItem(oldName, newName) {
-    let currentDir = fileStructure;
-    for (let dir of currentPath) {
-      currentDir = currentDir[dir].children;
+    let currentDir = fileStructure.root;
+    for (let dir of currentPath.slice(1)) {
+      currentDir = currentDir.children[dir];
     }
   
-    if (currentDir[newName]) {
+    if (currentDir.children[newName]) {
       alert('An item with this name already exists!');
       return;
     }
   
-    currentDir[newName] = currentDir[oldName];
-    delete currentDir[oldName];
+    currentDir.children[newName] = currentDir.children[oldName];
+    delete currentDir.children[oldName];
   
-    saveData();
     renderFileStructure();
-    renderTreeStructure();
+    saveData();
   }
   
   // Function to delete an item
   function deleteItem(name) {
-    let currentDir = fileStructure;
-    for (let dir of currentPath) {
-      currentDir = currentDir[dir].children;
+    let currentDir = fileStructure.root;
+    for (let dir of currentPath.slice(1)) {
+      currentDir = currentDir.children[dir];
     }
   
-    delete currentDir[name];
+    delete currentDir.children[name];
   
-    saveData();
     renderFileStructure();
-    renderTreeStructure();
+    saveData();
   }
   
   // Function to save data to localStorage
@@ -169,15 +121,8 @@ let fileStructure = {
       if (name) createNewItem(name, 'directory');
     });
   
-    // New File button
-    document.querySelector('#new-file-btn').addEventListener('click', (e) => {
-      e.preventDefault();
-      const name = prompt('Enter file name:');
-      if (name) createNewItem(name, 'file');
-    });
-  
-    // Rename button
-    document.querySelector('#rename-btn').addEventListener('click', (e) => {
+    // Edit button (Rename functionality)
+    document.querySelector('.sidebar-menus a:nth-child(2)').addEventListener('click', (e) => {
       e.preventDefault();
       const oldName = prompt('Enter the name of the item to rename:');
       const newName = prompt('Enter the new name:');
@@ -185,13 +130,30 @@ let fileStructure = {
     });
   
     // Delete button
-    document.querySelector('#delete-btn').addEventListener('click', (e) => {
+    document.querySelector('.sidebar-menus a:nth-child(4)').addEventListener('click', (e) => {
       e.preventDefault();
       const name = prompt('Enter the name of the item to delete:');
       if (name) deleteItem(name);
     });
   
+    // Search functionality
+    const searchInput = document.querySelector('.search input');
+    const searchBtn = document.querySelector('.search-btn');
+    
+    searchBtn.addEventListener('click', () => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const detailCards = document.querySelectorAll('.detail-card');
+      
+      detailCards.forEach(card => {
+        const itemName = card.querySelector('h4').textContent.toLowerCase();
+        if (itemName.includes(searchTerm)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  
     // Initial render
     renderFileStructure();
-    renderTreeStructure();
   });
